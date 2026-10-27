@@ -1,0 +1,63 @@
+{
+  "brand": "Aurora Cloud (sample brand kit)",
+  "version": "2026.10",
+  "tone": {
+    "target_grade": 10,
+    "max_sentence_words": 28,
+    "max_exclamations": 1,
+    "acronyms": ["HTTP", "HTTPS", "SAML", "JSON", "AURORA", "SOC", "NOTE", "FAQ", "SSO", "SCIM", "OAuth", "OKRS", "GDPR", "HIPAA"],
+    "hype": [
+      {"term": "revolutionary", "replace": "new", "rule": "TONE-HYPE", "section": "Voice §1.2 Confident, not boastful"},
+      {"term": "game-changing", "replace": "useful", "rule": "TONE-HYPE", "section": "Voice §1.2 Confident, not boastful"},
+      {"term": "game changer", "replace": "useful addition", "rule": "TONE-HYPE", "section": "Voice §1.2 Confident, not boastful"},
+      {"term": "world-class", "replace": "reliable", "rule": "TONE-HYPE", "section": "Voice §1.2 Confident, not boastful"},
+      {"term": "cutting-edge", "replace": "modern", "rule": "TONE-HYPE", "section": "Voice §1.2 Confident, not boastful"},
+      {"term": "unparalleled", "replace": "strong", "rule": "TONE-HYPE", "section": "Voice §1.2 Confident, not boastful"},
+      {"term": "next-generation", "replace": "new", "rule": "TONE-HYPE", "section": "Voice §1.2 Confident, not boastful"},
+      {"term": "synergy", "replace": "teamwork", "rule": "TONE-JARGON", "section": "Voice §1.4 Plain words"},
+      {"term": "leverage", "replace": "use", "rule": "TONE-JARGON", "section": "Voice §1.4 Plain words"},
+      {"term": "utilize", "replace": "use", "rule": "TONE-JARGON", "section": "Voice §1.4 Plain words"},
+      {"term": "paradigm shift", "replace": "big change", "rule": "TONE-JARGON", "section": "Voice §1.4 Plain words"}
+    ]
+  },
+  "glossary": [
+    {"id": "TERM-PRODUCT", "preferred": "Aurora Sync", "wrong": ["AuroraSync", "Aurora sync", "aurora sync", "Aurora-Sync", "AURORA SYNC"], "case_sensitive": true, "severity": "medium", "section": "Naming §2.1 Product names", "note": "Product name is two words, both capitalised."},
+    {"id": "TERM-BRAND", "preferred": "Aurora Cloud", "wrong": ["AuroraCloud", "Aurora cloud", "aurora cloud", "Aurora-Cloud"], "case_sensitive": true, "severity": "medium", "section": "Naming §2.1 Product names", "note": "Company name is two words, both capitalised."},
+    {"id": "TERM-EMAIL", "preferred": "email", "wrong": ["e-mail"], "case_sensitive": false, "severity": "low", "section": "Naming §2.4 Everyday terms", "note": "We write email without a hyphen."},
+    {"id": "TERM-SIGNIN", "preferred": "sign in", "wrong": ["log in", "login"], "case_sensitive": false, "severity": "low", "section": "Naming §2.4 Everyday terms", "note": "We say sign in, not log in."},
+    {"id": "TERM-CUSTOMER", "preferred": "customers", "wrong": ["clients"], "case_sensitive": false, "severity": "low", "section": "Naming §2.5 People we serve", "note": "Say customers, not clients."}
+  ],
+  "facts": [
+    {"id": "FACT-CUSTOMERS", "label": "Customer count", "pattern": "(?P<v>\\d[\\d,]*(?:\\.\\d+)?\\s?[kK]?)\\+?\\s+(?:active\\s+)?(?:customers|companies)", "value": 12000, "display": "12,000", "source": "Fact sheet FS-2026-09", "valid_until": "2027-03-31", "section": "Facts §3.1 Company numbers", "tolerance": 0},
+    {"id": "FACT-UPTIME", "label": "Uptime", "pattern": "(?P<v>\\d{2}(?:\\.\\d+)?)\\s?%\\s+uptime", "value": 99.9, "display": "99.9", "source": "Service agreement SLA §4.2", "valid_until": "2027-03-31", "section": "Facts §3.2 Reliability", "tolerance": 0},
+    {"id": "FACT-FOUNDED", "label": "Founding year", "pattern": "founded\\s+in\\s+(?P<v>\\d{4})", "value": 2014, "display": "2014", "source": "Company registry", "valid_until": "2099-12-31", "section": "Facts §3.1 Company numbers", "tolerance": 0},
+    {"id": "FACT-REGIONS", "label": "Data regions", "pattern": "(?P<v>\\d+)\\s+(?:data\\s+)?regions", "value": 14, "display": "14", "source": "Infrastructure page 2026-09", "valid_until": "2027-03-31", "section": "Facts §3.3 Infrastructure", "tolerance": 0}
+  ],
+  "claims": [
+    {"id": "CLAIM-SOC2", "trigger": "SOC\\s?2(?:\\s+Type\\s+(?:II|2))?(?:\\s+certified)?", "status": "expired", "valid_until": "2026-06-30", "approved_wording": "SOC 2 Type II audit renewal in progress", "note": "Legal approval for the SOC 2 claim ended on 30 June 2026 while the audit is renewed.", "section": "Claims §4.1 Certifications"},
+    {"id": "CLAIM-SUPERLATIVE", "trigger": "\\b(?:fastest|best|#1|number one|no\\.\\s?1|most (?:secure|reliable|trusted)|industry[- ]leading|unbeatable|market leader)\\b", "status": "needs_evidence", "replacements": {"fastest": "fast", "best": "strong", "#1": "trusted", "number one": "trusted", "no. 1": "trusted", "no.1": "trusted", "most secure": "secure", "most reliable": "reliable", "most trusted": "trusted", "industry-leading": "capable", "industry leading": "capable", "unbeatable": "competitive", "market leader": "established provider"}, "note": "Superlatives need a dated, citable source in the evidence register.", "section": "Claims §4.2 Superlatives"},
+    {"id": "CLAIM-GUARANTEE", "trigger": "\\b(?:guarantee[sd]?|risk[- ]free|100\\s?%\\s+(?:secure|safe|accurate|reliable)|zero (?:downtime|risk)|never fails?|unhackable)\\b", "status": "prohibited", "replacements": {"guarantee": "aim to deliver", "guarantees": "aims to deliver", "guaranteed": "designed to deliver", "risk-free": "low-risk", "risk free": "low-risk", "100% secure": "built with strong security controls", "100% safe": "built with strong safety controls", "100% accurate": "built for accuracy", "100% reliable": "built for reliability", "zero downtime": "high availability", "zero risk": "low risk", "never fails": "is built to stay available", "never fail": "is built to stay available", "unhackable": "built with strong security controls"}, "note": "Absolute promises are not permitted in any channel.", "section": "Claims §4.3 Absolute promises"},
+    {"id": "CLAIM-COMPETITOR", "trigger": "\\b(?:better|faster|cheaper|safer) than\\s+[A-Z][\\w]+", "status": "needs_evidence", "note": "Comparisons that name a competitor need legal sign-off and a dated source.", "section": "Claims §4.4 Comparisons"}
+  ],
+  "requirements": [
+    {"id": "REQ-TERMS", "when": "free trial|discount|\\d+\\s?% off|limited[- ]time", "channels": null, "require": "terms apply|see terms|conditions apply", "add": "Terms apply.", "message": "Offers must carry a terms notice.", "section": "Messaging §5.2 Offers"},
+    {"id": "REQ-UNSUB", "when": null, "channels": ["email"], "require": "unsubscribe", "add": "You can unsubscribe at any time.", "message": "Marketing email must include an unsubscribe line.", "section": "Messaging §5.4 Email"}
+  ],
+  "confidential": {
+    "terms": ["Project Falcon", "Project Nimbus", "Q4 pricing plan", "unreleased roadmap"],
+    "markers": "\\b(?:internal only|confidential|do not distribute|not for external (?:use|release)|under embargo)\\b",
+    "section": "Confidentiality §6.1 What stays inside"
+  },
+  "palette": [
+    {"name": "Aurora Blue", "hex": "#1F4FD8"},
+    {"name": "Midnight", "hex": "#0B1B3A"},
+    {"name": "Dawn Coral", "hex": "#F26B4F"},
+    {"name": "Mint Signal", "hex": "#2BB673"}
+  ],
+  "channels": {
+    "social": {"max_chars": 280, "image": {"w": 1200, "h": 630}},
+    "email": {"image": {"w": 600, "h": 300}},
+    "web": {"image": {"w": 1600, "h": 900}},
+    "press": {}
+  }
+}
