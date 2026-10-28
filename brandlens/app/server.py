@@ -34,6 +34,7 @@ class Handler(BaseHTTPRequestHandler):
     # ---- helpers
     def _send(self, code, body, ctype="application/json", extra=None):
         data = body if isinstance(body, bytes) else json.dumps(body).encode()
+        head_only = self.command == "HEAD"
         self.send_response(code)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(data)))
@@ -44,7 +45,8 @@ class Handler(BaseHTTPRequestHandler):
         for k, v in (extra or {}).items():
             self.send_header(k, v)
         self.end_headers()
-        self.wfile.write(data)
+        if not head_only:
+            self.wfile.write(data)
 
     def _err(self, code, msg):
         self._send(code, {"error": msg})
@@ -72,10 +74,15 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         self._dispatch("POST")
 
+    def do_HEAD(self):
+        self._dispatch("GET")
+
     def _dispatch(self, method):
         url = urlparse(self.path)
         path = url.path
         try:
+            if path == "/healthz":
+                return self._send(200, {"ok": True})
             if not path.startswith("/api/"):
                 if method != "GET":
                     return self._err(405, "Method not allowed.")
@@ -170,10 +177,21 @@ def make_server(db_path, host="127.0.0.1", port=8000):
 
 
 def main():
-    db = os.environ.get("BRANDLENS_DB", os.path.join(ROOT, "data", "brandlens.db"))
+    # Hosting platforms (Render, Railway, Heroku and similar) set PORT. When it is present we are
+    # hosted, so listen on all interfaces, keep the database in /tmp and load the sample data.
+    hosted = bool(os.environ.get("PORT") or os.environ.get("RENDER"))
+    default_db = "/tmp/brandlens.db" if hosted else os.path.join(ROOT, "data", "brandlens.db")
+    db = os.environ.get("BRANDLENS_DB", default_db)
     port = int(os.environ.get("PORT", "8000"))
-    srv, _ = make_server(db, port=port)
-    print(f"BrandLens running at http://127.0.0.1:{port}  (demo password for all accounts: {DEMO_PASSWORD})")
+    host = os.environ.get("HOST", "0.0.0.0" if hosted else "127.0.0.1")
+    srv, store = make_server(db, host=host, port=port)
+    if hosted or os.environ.get("BRANDLENS_SEED") == "1":
+        try:
+            from scripts.seed_demo import seed_pieces
+            seed_pieces(store)
+        except Exception as e:  # sample data is optional; never stop the server for it
+            print(f"Sample data not loaded: {e!r}", flush=True)
+    print(f"BrandLens running on {host}:{port}  (demo password for all accounts: {DEMO_PASSWORD})", flush=True)
     try:
         srv.serve_forever()
     except KeyboardInterrupt:
