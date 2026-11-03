@@ -16,7 +16,7 @@ python3 -m unittest tests.test_brandlens   # 21 tests
 Demo accounts (password `demo123`, demo only): `maya`, `ravi` (creators), `meera` (manager), `lena` (legal reviewer).
 Set `BRANDLENS_TODAY=2026-10-25` to pin the date used for "expired" claims and facts.
 
-## What it does (Round 2 scope)
+## What it does (Round 3 scope)
 
 | Area | What is built |
 | --- | --- |
@@ -34,21 +34,9 @@ Set `BRANDLENS_TODAY=2026-10-25` to pin the date used for "expired" claims and f
 
 ## Honest limitations
 
-- **No LLM yet.** Findings come from deterministic rules and colour maths, which keeps results reproducible and explainable, but it cannot judge tone or meaning beyond the rules in the kit. A retrieval-grounded model is the planned next layer (see Round 3).
+- **No LLM yet.** Findings come from deterministic rules and colour maths, which keeps results reproducible and explainable, but it cannot judge tone or meaning beyond the rules in the kit. A retrieval-grounded model is the planned next layer.
 - Visual checks cover palette, shape and size. There is **no logo detection or font checking** yet.
 - Text, HTML and image-plus-caption only. **DOCX, PDF and slide ingestion are not built.**
 - Auth is demo-grade (seeded accounts, no rate limiting or password reset) and the SQLite file is not encrypted at rest.
 - The UI was tested by running its rendering code against the live API in a simulated DOM, **not in a real browser**. Open it in a browser and check layout and keyboard use before demoing.
 - The stack differs from the original plan: FastAPI, React and Postgres were replaced by the standard library, vanilla JS and SQLite because package installs were unavailable while building. Porting is straightforward since the logic is separated from the transport.
-
-## Suggested "three major improvements" for Round 3
-
-Only commit to these if you will deliver them; Round 3 is judged against whatever you name.
-
-1. **Retrieval-grounded LLM review** for tone and meaning, citing kit passages, with a confidence gate that routes weak results to a human.
-2. **More formats**: DOCX, PDF and slide-deck ingestion with per-slide findings.
-3. **Evaluation report**: a labelled test set with measured precision and recall per rule, published in the repo.
-
-## AI and tool disclosure (for the submission form)
-
-This project was written with Claude (Anthropic) acting as a coding assistant, directed by the participant. Libraries used: Pillow. Everything else is the Python standard library and browser JavaScript. No earlier code or templates were reused.
